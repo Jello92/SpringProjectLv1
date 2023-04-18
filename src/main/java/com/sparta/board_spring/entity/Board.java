@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class Board extends Timestamped{
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,10 +17,10 @@ public class Board extends Timestamped{
     private String title;
 
     @Column(nullable = false)
-    private String author;
+    private String content;
 
     @Column(nullable = false)
-    private String content;
+    private String author;
 
     @Column(nullable = false)
     private String password;
@@ -31,14 +30,12 @@ public class Board extends Timestamped{
         this.author = requestDto.getAuthor();
         this.content = requestDto.getContent();
         this.password = requestDto.getPassword();
-
-
     }
 
     public void update(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.author = requestDto.getAuthor();
         this.content = requestDto.getContent();
+        this.author = requestDto.getAuthor();
         this.password = requestDto.getPassword();
 
     }

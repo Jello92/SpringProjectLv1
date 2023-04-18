@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,20 +32,22 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
-        board.update(requestDto);
-        return board.getId();
+
+        if (boardRepository.findByUserPw(requestDto.getPassword()) !=null) {
+            board.update(requestDto);
+            return board.getId();
+        } else return null;
     }
 
     @Transactional
-    public Long deleteBoard(Long id) {
-        boardRepository.deleteById(id);
-        return id;
-    }
+    public Long deleteBoard(Long id, BoardRequestDto requestDto) {
+        Board board = boardRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+        );
 
-    @Transactional
-    public Board getBoardById(Long id) {
-        Optional<Board> optionalBoard = boardRepository.findById(id);
-        return optionalBoard.orElse(null);
+        if (boardRepository.findByUserPw(requestDto.getPassword()) !=null) {
+            boardRepository.deleteById(id);
+            return id;
+        } else return null;
     }
-
 }
