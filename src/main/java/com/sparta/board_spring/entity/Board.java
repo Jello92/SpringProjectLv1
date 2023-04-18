@@ -27,8 +27,8 @@ public class Board extends Timestamped{
 
     public Board(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.author = requestDto.getAuthor();
         this.content = requestDto.getContent();
+        this.author = requestDto.getAuthor();
         this.password = requestDto.getPassword();
     }
 

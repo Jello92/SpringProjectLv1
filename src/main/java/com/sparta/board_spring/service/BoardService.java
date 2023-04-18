@@ -28,26 +28,27 @@ public class BoardService {
     }
 
     @Transactional
-    public Long updateBoard(Long id, BoardRequestDto requestDto) {
+    public Board update(Long id, BoardRequestDto requestDto) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
-
-        if (boardRepository.findByUserPw(requestDto.getPassword()) !=null) {
-            board.update(requestDto);
-            return board.getId();
-        } else return null;
+        Board board1 = boardRepository.findByIdAndPassword(id, requestDto.getPassword()).orElseThrow(
+                ()-> new IllegalArgumentException("비밀번호가 일치하지 않습니다.")
+        );
+        board.update(requestDto);
+        return board;
     }
 
     @Transactional
-    public Long deleteBoard(Long id, BoardRequestDto requestDto) {
+    public String deleteBoard(Long id, String requestDto) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
 
-        if (boardRepository.findByUserPw(requestDto.getPassword()) !=null) {
-            boardRepository.deleteById(id);
-            return id;
-        } else return null;
+        Board board1 = boardRepository.findByIdAndPassword(id, board.getPassword()).orElseThrow(
+                ()-> new IllegalArgumentException("비밀번호가 일치하지 않습니다.")
+        );
+        boardRepository.deleteByIdAndPassword(id, board.getPassword());
+        return "Delete Success";
     }
 }
